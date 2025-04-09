@@ -1,3 +1,6 @@
+<!-- Miguel Cardenas - Johan Garcia - Angelo Rivera - Iverson Salazar  -->
+<!-- Software administrador de gimnasio -->
+
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
