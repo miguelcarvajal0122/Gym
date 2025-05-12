@@ -33,9 +33,10 @@ class PlanController extends Controller
 
     public function edit($id)
 {
-    $plan = Plan::with(['plan'])->get();
+    $plan = Plan::findOrFail($id);
     return view('planes.edit', compact('plan'));
 }
+
 
 public function update(Request $request, $id)
 {

@@ -43,32 +43,37 @@ class SuscripcionController extends Controller
         return redirect()->route('suscripciones.index')->with('success', 'Suscripción creada correctamente.');
     }
 
-    public function edit(Suscripcion $suscripcion)
-    {
-        $usuarios = User::all();
-        $planes = Plan::all();
-        return view('suscripciones.edit', compact('suscripcion', 'usuarios', 'planes'));
-    }
+    public function edit($id)
+{
+    $suscripcion = Suscripcion::findOrFail($id);
+    $planes = Plan::all();
 
-    public function update(Request $request, Suscripcion $suscripcion)
-    {
-        $request->validate([
-            'user_id' => 'required',
-            'plan_id' => 'required',
-            'fecha_inicio' => 'required|date',
-            'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
-            'estado' => 'required',
-        ]);
-
-        $suscripcion->update($request->all());
-
-        return redirect()->route('suscripciones.index')->with('success', 'Suscripción actualizada');
-    }
-
-    public function destroy(Suscripcion $suscripcion)
-    {
-        $suscripcion->delete();
-        return redirect()->route('suscripciones.index')->with('success', 'Suscripción eliminada');
-    }
+    return view('suscripciones.edit', compact('suscripcion', 'planes'));
 }
 
+
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'plan_id' => 'required|exists:planes,id',
+        'fecha_inicio' => 'required|date',
+        'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
+        'estado' => 'required|string|max:255',
+    ]);
+
+    $suscripcion = Suscripcion::findOrFail($id);
+    $suscripcion->update($request->all());
+
+    return redirect()->route('suscripciones.index')->with('success', 'Suscripción actualizada correctamente.');
+}
+
+
+    public function destroy($id)
+{
+    $suscripcion = Suscripcion::findOrFail($id);
+    $suscripcion->delete();
+
+    return redirect()->route('suscripciones.index')->with('success', 'Suscripción eliminada correctamente.');
+}
+
+}

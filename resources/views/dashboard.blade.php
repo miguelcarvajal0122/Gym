@@ -19,7 +19,6 @@
                     </div>
                     <h5 class="card-title">Mi Perfil</h5>
                     <p class="card-text">Administra tu cuenta y visualiza tu progreso.</p>
-                    <a href="#" class="btn btn-outline-primary">Ver Perfil</a>
                 </div>
             </div>
         </div>
@@ -47,7 +46,7 @@
                     </div>
                     <h5 class="card-title">Historial de Pagos</h5>
                     <p class="card-text">Visualiza tus facturas y pagos realizados.</p>
-                    <a href="#" class="btn btn-outline-warning">Ver Historial</a>
+                    <a href="{{ route('pagos.index') }}" class="btn btn-outline-warning">Ver Historial</a>
                 </div>
             </div>
         </div>

@@ -53,17 +53,19 @@
     <div class="sidebar">
         <h4>🏋️ Gym Panel</h4>
         <ul>
-            <li><a href="{{ route('dashboard') }}">🏠 Dashboard</a></li>
+            <li><a href="{{ route('dashboard') }}">🏠 Inicio</a></li>
             <li><a href="{{ route('planes.index') }}">📋 Planes</a></li>
             <li><a href="{{ route('suscripciones.index') }}">👥 Suscripciones</a></li>
             <li><a href="{{ route('pagos.index') }}">📈 Mis Pagos</a></li>
-            <li><a href="{{ route('usuarios.index') }}">⚙️ Configuración</a></li>
-            <li>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="btn btn-link w-100 text-start">🔓 Cerrar sesión</button>
-                </form>
-            </li>
+            <li><a href="{{ route('users.index') }}">⚙️ Usuarios</a></li>
+           <li>
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="btn btn-link w-100 text-start" style="text-decoration: none; color: #333; padding: 0.8rem 1rem;">
+            🔓 Cerrar sesión
+        </button>
+    </form>
+</li>
         </ul>
     </div>
     @endauth

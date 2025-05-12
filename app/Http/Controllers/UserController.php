@@ -3,21 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $usuarios = User::all();
-        return view('usuarios.index', compact('usuarios'));
+        $users = User::all();
+        return view('users.index', compact('users'));
     }
 
     public function create()
     {
         $roles = Role::all();
-        return view('usuarios.create', compact('roles'));
+        return view('users.create', compact('roles'));
     }
 
     public function store(Request $request)
@@ -26,7 +26,6 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
-            'roles' => 'required|array',
         ]);
 
         $user = User::create([
@@ -35,44 +34,38 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        $user->syncRoles($request->roles);
+        $user->syncRoles($request->input('roles', []));
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario creado correctamente.');
+        return redirect()->route('users.index')->with('success', 'Usuario creado correctamente.');
     }
 
-    public function edit(User $usuario)
+    public function edit(User $user)
     {
         $roles = Role::all();
-        return view('usuarios.edit', compact('usuario', 'roles'));
+        return view('users.edit', compact('user', 'roles'));
     }
 
-    public function update(Request $request, User $usuario)
+    public function update(Request $request, User $user)
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $usuario->id,
-            'roles' => 'required|array',
+            'email' => 'required|email|unique:users,email,' . $user->id,
         ]);
 
-        $usuario->update([
-            'name' => $request->name,
-            'email' => $request->email,
-        ]);
+        $user->update($request->only('name', 'email'));
 
         if ($request->filled('password')) {
-            $usuario->update([
-                'password' => bcrypt($request->password),
-            ]);
+            $user->update(['password' => bcrypt($request->password)]);
         }
 
-        $usuario->syncRoles($request->roles);
+        $user->syncRoles($request->input('roles', []));
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado correctamente.');
+        return redirect()->route('users.index')->with('success', 'Usuario actualizado correctamente.');
     }
 
-    public function destroy(User $usuario)
+    public function destroy(User $user)
     {
-        $usuario->delete();
-        return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado correctamente.');
+        $user->delete();
+        return redirect()->route('users.index')->with('success', 'Usuario eliminado correctamente.');
     }
 }

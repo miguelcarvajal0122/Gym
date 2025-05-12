@@ -2,21 +2,21 @@
 
 @section('content')
 <div class="container">
-    <h1>Suscripciones</h1>
-
-    <a href="{{ route('suscripciones.create') }}" class="btn btn-success mb-3">Crear nueva suscripción</a>
+    <h1>Lista de Suscripciones</h1>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
+
+    <a href="{{ route('suscripciones.create') }}" class="btn btn-primary mb-3">Crear Suscripción</a>
 
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Usuario</th>
                 <th>Plan</th>
-                <th>Fecha inicio</th>
-                <th>Fecha fin</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
                 <th>Estado</th>
                 <th>Acciones</th>
             </tr>
@@ -24,18 +24,17 @@
         <tbody>
             @foreach($suscripciones as $suscripcion)
                 <tr>
-                    <td>{{ $suscripcion->usuario->name }}</td>
-                    <td>{{ $suscripcion->plan->nombre }}</td>
+                    <td>{{ $suscripcion->usuario->name ?? 'N/A' }}</td>
+                    <td>{{ $suscripcion->plan->nombre ?? 'N/A' }}</td>
                     <td>{{ $suscripcion->fecha_inicio }}</td>
                     <td>{{ $suscripcion->fecha_fin }}</td>
-                    <td>{{ ucfirst($suscripcion->estado) }}</td>
+                    <td>{{ $suscripcion->estado }}</td>
                     <td>
-                        <a href="{{ route('suscripciones.edit', $suscripcion->id) }}" class="btn btn-sm btn-primary">Editar</a>
-
-                        <form action="{{ route('suscripciones.destroy', $suscripcion->id) }}" method="POST" style="display:inline-block;">
+                        <a href="{{ route('suscripciones.edit', $suscripcion) }}" class="btn btn-warning btn-sm">Editar</a>
+                        <form action="{{ route('suscripciones.destroy', $suscripcion) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar esta suscripción?')">Eliminar</button>
                         </form>
                     </td>
                 </tr>

@@ -2,22 +2,57 @@
 
 @section('content')
 <div class="container">
-    <h2 class="text-warning mb-4">Editar suscripción</h2>
+    <h1>Editar Suscripción</h1>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <form action="{{ route('suscripciones.update', $suscripcion->id) }}" method="POST">
-                @csrf
-                @method('PUT')
-
-                @include('suscripciones.form', ['suscripcion' => $suscripcion])
-
-                <div class="mt-3">
-                    <a href="{{ route('suscripciones.index') }}" class="btn btn-secondary">Volver</a>
-                    <button type="submit" class="btn btn-warning">Actualizar</button>
-                </div>
-            </form>
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
-    </div>
+    @endif
+
+    @isset($suscripcion)
+    <form action="{{ route('suscripciones.update', $suscripcion->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+
+        <div class="mb-3">
+            <label for="user_id" class="form-label">Usuario</label>
+            <input type="text" class="form-control" value="{{ $suscripcion->usuario->name ?? 'N/A' }}" disabled>
+        </div>
+
+        <div class="mb-3">
+            <label for="plan_id" class="form-label">Plan</label>
+            <select name="plan_id" class="form-control">
+                @foreach($planes as $plan)
+                    <option value="{{ $plan->id }}" {{ $plan->id == $suscripcion->plan_id ? 'selected' : '' }}>
+                        {{ $plan->nombre }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="fecha_inicio" class="form-label">Fecha Inicio</label>
+            <input type="date" name="fecha_inicio" class="form-control" value="{{ $suscripcion->fecha_inicio }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="fecha_fin" class="form-label">Fecha Fin</label>
+            <input type="date" name="fecha_fin" class="form-control" value="{{ $suscripcion->fecha_fin }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="estado" class="form-label">Estado</label>
+            <input type="text" name="estado" class="form-control" value="{{ $suscripcion->estado }}">
+        </div>
+
+        <button type="submit" class="btn btn-success">Actualizar</button>
+        <a href="{{ route('suscripciones.index') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+    @endisset
 </div>
 @endsection
